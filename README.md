@@ -1,5 +1,9 @@
 ## The-Startup-Stack cli
 
+<a href="http://the-startup-stack.com" style="text-align: center; display: block;">
+  ![the-startup-stack](http://assets.avi.io/logo-black.png)
+</a>
+
 [The Startup Stack](http://http://the-startup-stack.com/) command line tool.
 
 This project is a CLI for the startup stack. It helps you work better with all
