@@ -1,9 +1,5 @@
 ## The-Startup-Stack cli
 
-<a href="http://the-startup-stack.com" style="text-align: center; display: block;">
-  ![the-startup-stack](http://assets.avi.io/logo-black.png)
-</a>
-
 [The Startup Stack](http://http://the-startup-stack.com/) command line tool.
 
 This project is a CLI for the startup stack. It helps you work better with all
@@ -15,14 +11,24 @@ the moving parts.
 
 All commands related to the project directory and templates.
 
-### Create
+### generate
 
 Creates the project template under the current directory.
 
-#### Flags
+Usge:
 
-* `--directory-name`
-* `--project-name`
+```
+NAME:
+   stack project generate - stack project generate
+
+USAGE:
+   stack project generate [command options] [arguments...]
+
+OPTIONS:
+   --directory-name "chef"      Directory Name to create
+   --project-name "stack"       Project Name (Your company name in lowercase eg: google)
+```
+
 
 * Clones the [template repository](https://github.com/the-startup-stack/chef-repo-template) to `~/.the-startup-stack`
 * Creates a directory called `{project-name}` under the current directory

@@ -2,6 +2,7 @@ package stackcli
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"os/user"
