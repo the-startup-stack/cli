@@ -1,6 +1,6 @@
 ## The-Startup-Stack cli
 
-[The Startup Stack](http://http://the-startup-stack.com/) command line tool.
+[The Startup Stack](http://the-startup-stack.com/) command line tool.
 
 This project is a CLI for the startup stack. It helps you work better with all
 the moving parts.
