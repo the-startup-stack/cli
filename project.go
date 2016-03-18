@@ -2,9 +2,7 @@ package stackcli
 
 import (
 	"fmt"
-	"io"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"os/exec"
 	"os/user"
@@ -15,30 +13,6 @@ type Project struct {
 	ProjectName   string
 	DirectoryName string
 	TempDir       string
-}
-
-func downloadFile(filepath string, url string) (err error) {
-	// Create the file
-	out, err := os.Create(filepath)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-
-	// Get the data
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	// Writer the body to file
-	_, err = io.Copy(out, resp.Body)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (p *Project) CreateTempDir() {
@@ -61,11 +35,11 @@ func (p *Project) CopyFiles() {
 func (p *Project) CopyAndRenameFiles() {
 	p.CopyFiles()
 
-	p.iterateDir(p.DirectoryName, "")
+	p.iterateDir(p.DirectoryName)
 }
 
-func (p *Project) iterateDir(parent string, directoryName string) {
-	dir := fmt.Sprintf("%s/%s", parent, directoryName)
+func (p *Project) iterateDir(startDir string) {
+	dir := fmt.Sprintf("%s/", startDir)
 
 	files, err := ioutil.ReadDir(dir)
 
@@ -75,11 +49,11 @@ func (p *Project) iterateDir(parent string, directoryName string) {
 
 	for _, file := range files {
 		filename := fmt.Sprintf("%s%s", dir, file.Name())
-		renamer := NewDirectoryRenamer(p, filename)
+		renamer := NewRenamer(p, filename)
 		newName := renamer.execute()
 
 		if file.IsDir() {
-			p.iterateDir(newName, "")
+			p.iterateDir(newName)
 		}
 	}
 }

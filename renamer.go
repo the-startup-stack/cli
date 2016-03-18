@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type DirectoryRenamer struct {
+type Renamer struct {
 	Vals     map[string]string
 	FileName string
 }
@@ -17,8 +17,8 @@ type Match struct {
 	Value string
 }
 
-func NewDirectoryRenamer(project *Project, filename string) *DirectoryRenamer {
-	return &DirectoryRenamer{
+func NewRenamer(project *Project, filename string) *Renamer {
+	return &Renamer{
 		FileName: filename,
 		Vals: map[string]string{
 			"project-name": project.ProjectName,
@@ -26,12 +26,12 @@ func NewDirectoryRenamer(project *Project, filename string) *DirectoryRenamer {
 	}
 }
 
-func (r *DirectoryRenamer) execute() string {
+func (r *Renamer) execute() string {
 	matches := r.match(r.FileName)
 	return r.renameMatches(r.FileName, matches)
 }
 
-func (r *DirectoryRenamer) renameMatches(origFileName string, matches []Match) string {
+func (r *Renamer) renameMatches(origFileName string, matches []Match) string {
 	newFileName := origFileName
 	for _, match := range matches {
 		newFileName = strings.Replace(newFileName, match.Key, match.Value, -1)
@@ -41,10 +41,11 @@ func (r *DirectoryRenamer) renameMatches(origFileName string, matches []Match) s
 	if err != nil {
 		panic(err)
 	}
+
 	return newFileName
 }
 
-func (r *DirectoryRenamer) match(path string) []Match {
+func (r *Renamer) match(path string) []Match {
 	matches := []Match{}
 
 	for key, value := range r.Vals {
@@ -62,4 +63,4 @@ func (r *DirectoryRenamer) match(path string) []Match {
 	return matches
 }
 
-func (r *DirectoryRenamer) getMatch(path string) {}
+func (r *Renamer) getMatch(path string) {}

@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-func TestDirectoryRenamer(t *testing.T) { TestingT(t) }
+func TestRenamer(t *testing.T) { TestingT(t) }
 
-type DirectoryRenamerSuite struct{}
+type RenamerSuite struct{}
 
-var _ = Suite(&DirectoryRenamerSuite{})
+var _ = Suite(&RenamerSuite{})
 
-func (s *DirectoryRenamerSuite) TestMatch(c *C) {
-	renamer := NewDirectoryRenamer(&Project{ProjectName: "test"}, "")
+func (s *RenamerSuite) TestMatch(c *C) {
+	renamer := NewRenamer(&Project{ProjectName: "test"}, "")
 	matches := renamer.match("test/chef/{{project-name}}-cookbooks/{{project-name}}-something")
 	c.Assert(len(matches), Equals, 1)
 	c.Assert(matches[0].Key, Equals, "{{project-name}}")
