@@ -8,8 +8,8 @@ import (
 )
 
 type DirectoryRenamer struct {
-	Files []string
-	Vals  map[string]string
+	Vals     map[string]string
+	FileName string
 }
 
 type Match struct {
@@ -17,35 +17,31 @@ type Match struct {
 	Value string
 }
 
-func NewDirectoryRenamer(project *Project, fileList []string) *DirectoryRenamer {
+func NewDirectoryRenamer(project *Project, filename string) *DirectoryRenamer {
 	return &DirectoryRenamer{
-		Files: fileList,
+		FileName: filename,
 		Vals: map[string]string{
 			"project-name": project.ProjectName,
 		},
 	}
 }
 
-func (r *DirectoryRenamer) execute() {
-	reversedFileList := reverseArray(r.Files)
-
-	for _, file := range reversedFileList {
-		matches := r.match(file)
-		fmt.Println("File: ", file)
-		r.renameMatches(file, matches)
-	}
+func (r *DirectoryRenamer) execute() string {
+	matches := r.match(r.FileName)
+	return r.renameMatches(r.FileName, matches)
 }
 
-func (r *DirectoryRenamer) renameMatches(origFileName string, matches []Match) {
+func (r *DirectoryRenamer) renameMatches(origFileName string, matches []Match) string {
 	newFileName := origFileName
 	for _, match := range matches {
 		newFileName = strings.Replace(newFileName, match.Key, match.Value, -1)
-		fmt.Println(newFileName)
 	}
+
 	err := os.Rename(origFileName, newFileName)
 	if err != nil {
-		fmt.Println("Error renaming")
+		panic(err)
 	}
+	return newFileName
 }
 
 func (r *DirectoryRenamer) match(path string) []Match {

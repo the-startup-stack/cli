@@ -12,9 +12,9 @@ type UtilsSuite struct{}
 var _ = Suite(&UtilsSuite{})
 
 func (s *UtilsSuite) TestReverseArray(c *C) {
-	files := []string{"a", "b", "c"}
-	reversed := reverseArray(files)
-	c.Assert(reversed[0], Equals, "c")
-	c.Assert(reversed[1], Equals, "b")
-	c.Assert(reversed[2], Equals, "a")
+	files := []string{"a/a", "a/a/a", "a/a/a/a"}
+	reversed := traverseDirStructure(files)
+	c.Assert(reversed[0], Equals, "a/a/a/a")
+	c.Assert(reversed[1], Equals, "a/a/a")
+	c.Assert(reversed[2], Equals, "a/a")
 }

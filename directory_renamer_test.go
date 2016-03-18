@@ -12,8 +12,7 @@ type DirectoryRenamerSuite struct{}
 var _ = Suite(&DirectoryRenamerSuite{})
 
 func (s *DirectoryRenamerSuite) TestMatch(c *C) {
-	filelist := []string{}
-	renamer := NewDirectoryRenamer(&Project{ProjectName: "test"}, filelist)
+	renamer := NewDirectoryRenamer(&Project{ProjectName: "test"}, "")
 	matches := renamer.match("test/chef/{{project-name}}-cookbooks/{{project-name}}-something")
 	c.Assert(len(matches), Equals, 1)
 	c.Assert(matches[0].Key, Equals, "{{project-name}}")

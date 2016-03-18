@@ -3,11 +3,11 @@ package stackcli
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
 	"os/user"
-	"path/filepath"
 )
 
 type Project struct {
@@ -61,19 +61,27 @@ func (p *Project) CopyFiles() {
 func (p *Project) CopyAndRenameFiles() {
 	p.CopyFiles()
 
-	fileList := []string{}
+	p.iterateDir(p.DirectoryName, "")
+}
 
-	err := filepath.Walk(p.DirectoryName, func(path string, f os.FileInfo, err error) error {
-		fileList = append(fileList, path)
-		return nil
-	})
+func (p *Project) iterateDir(parent string, directoryName string) {
+	dir := fmt.Sprintf("%s/%s", parent, directoryName)
+
+	files, err := ioutil.ReadDir(dir)
 
 	if err != nil {
 		panic(err)
 	}
 
-	renamer := NewDirectoryRenamer(p, fileList)
-	renamer.execute()
+	for _, file := range files {
+		filename := fmt.Sprintf("%s%s", dir, file.Name())
+		renamer := NewDirectoryRenamer(p, filename)
+		newName := renamer.execute()
+
+		if file.IsDir() {
+			p.iterateDir(newName, "")
+		}
+	}
 }
 
 func (p *Project) Create() {

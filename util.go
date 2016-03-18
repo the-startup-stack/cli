@@ -5,6 +5,8 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sort"
+	"strings"
 )
 
 func unzip(archive, target string) error {
@@ -48,4 +50,17 @@ func reverseArray(list []string) []string {
 		list[i], list[j] = list[j], list[i]
 	}
 	return list
+}
+
+type ByLength []string
+
+func (a ByLength) Len() int { return len(a) }
+func (a ByLength) Less(i, j int) bool {
+	return len(strings.Split(a[i], "/")) < len(strings.Split(a[j], "/"))
+}
+func (a ByLength) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+
+func traverseDirStructure(list []string) []string {
+	sort.Sort(ByLength(list))
+	return reverseArray(list)
 }
