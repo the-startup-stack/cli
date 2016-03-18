@@ -37,5 +37,4 @@ func ProjectCommands() []cli.Command {
 			},
 		},
 	}
-
 }

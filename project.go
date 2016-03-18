@@ -5,7 +5,9 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/user"
+	"path/filepath"
 )
 
 type Project struct {
@@ -49,9 +51,42 @@ func (p *Project) DownloadAndExtractZip() {
 	unzip(zipFile, p.TempDir)
 }
 
+func (p *Project) CopyFiles() {
+	cpCmd := exec.Command("cp", "-rf", p.TempDir, p.DirectoryName)
+	err := cpCmd.Run()
+	if err != nil {
+		panic("Could not copy files")
+	}
+}
+func (p *Project) CopyAndRenameFiles() {
+	p.CopyFiles()
+
+	fileList := []string{}
+
+	err := filepath.Walk(p.DirectoryName, func(path string, f os.FileInfo, err error) error {
+		fileList = append(fileList, path)
+		return nil
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	renamer := NewDirectoryRenamer(p, fileList)
+	renamer.execute()
+}
+
 func (p *Project) Create() {
+	p.CreateProjectDir()
 	p.CreateTempDir()
 	p.DownloadAndExtractZip()
+}
+
+func (p *Project) CreateProjectDir() {
+	err := os.MkdirAll(p.DirectoryName, 0755)
+	if err != nil {
+		panic("Could not create project directory")
+	}
 }
 
 func NewProject(projectName string, directoryName string) *Project {
