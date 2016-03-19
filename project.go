@@ -33,6 +33,7 @@ func (p *Project) CopyFiles() {
 		panic("Could not copy files")
 	}
 }
+
 func (p *Project) CopyAndRenameFiles() {
 	p.CopyFiles()
 
