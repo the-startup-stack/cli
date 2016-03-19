@@ -26,7 +26,8 @@ func (p *Project) DownloadAndExtractZip() {
 }
 
 func (p *Project) CopyFiles() {
-	cpCmd := exec.Command("cp", "-rf", p.TempDir, p.DirectoryName)
+	newDirName := fmt.Sprintf("%s/%s", p.TempDir, "chef-repo-template-master")
+	cpCmd := exec.Command("cp", "-rf", newDirName, p.DirectoryName)
 	err := cpCmd.Run()
 	if err != nil {
 		panic("Could not copy files")
@@ -62,6 +63,7 @@ func (p *Project) Create() {
 	p.CreateProjectDir()
 	p.CreateTempDir()
 	p.DownloadAndExtractZip()
+	p.CopyAndRenameFiles()
 }
 
 func (p *Project) CreateProjectDir() {

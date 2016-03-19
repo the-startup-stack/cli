@@ -1,6 +1,7 @@
 package stackcli
 
 import (
+	"fmt"
 	. "gopkg.in/check.v1"
 	"os"
 	"os/exec"
@@ -45,4 +46,5 @@ func (s *ProjectSuite) TestDirectoryStructure(c *C) {
 	c.Assert(len(fileList), Equals, 6)
 	c.Assert(fileList[1], Equals, "test/chef/test-cookbooks")
 	c.Assert(fileList[3], Equals, "test/chef/test-cookbooks/test-something")
+	c.Assert(fileList[5], Equals, "test/chef/test-file")
 }
