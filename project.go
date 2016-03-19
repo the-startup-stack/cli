@@ -26,7 +26,7 @@ func (p *Project) DownloadAndExtractZip() {
 }
 
 func (p *Project) CopyFiles() {
-	newDirName := fmt.Sprintf("%s/%s", p.TempDir, "chef-repo-template-master")
+	newDirName := fmt.Sprintf("%s/%s/", p.TempDir, "chef-repo-template-master")
 	cpCmd := exec.Command("cp", "-rf", newDirName, p.DirectoryName)
 	err := cpCmd.Run()
 	if err != nil {

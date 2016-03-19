@@ -1,7 +1,6 @@
 package stackcli
 
 import (
-	"fmt"
 	. "gopkg.in/check.v1"
 	"os"
 	"os/exec"
